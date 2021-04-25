@@ -46,7 +46,7 @@ The files can be loaded with `uuu` and fastboot running on u-boot through the US
 
 * Starting fastboot via UART
 
-    If you have a serial connection, you can press Ctrl-C at boot and then at the u-boot prompt run:
+    If you have a serial connection, you can press Ctrl-C while u-boot is loading to interrupt the normal boot process and then run:
 
     ```
     fastboot usb 0
@@ -60,9 +60,15 @@ The files can be loaded with `uuu` and fastboot running on u-boot through the US
     sudo uuu -b spl imx-boot
     ```
 
-Now that the board is running fastboot (you'll see a blue LED lit), you can download the boot scripts to EMMC:
+Now that the board is running fastboot (you'll see a blue LED lit), you can download the boot files to EMMC:
 
 ```
 cd output
 sudo uuu -v -b fat_write * mmc 0:1
+```
+
+To boot the board after downloading, the following can be run. Note that this command will timeout as control does not return to fastboot for a reply:
+
+```
+sudo uuu FB: ucmd boot
 ```
