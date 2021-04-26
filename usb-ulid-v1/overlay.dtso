@@ -1,0 +1,38 @@
+/dts-v1/;
+/plugin/;
+
+// #include "imx8mm-pinfunc.h"
+
+/ {
+	compatible = "gg,kimchi";
+
+	fragment@2 {
+		target = <&iomuxc>;
+
+		__overlay__ {
+			pinctrl_usbhub: usbhubgrp {
+				fsl,pins = <
+					/*MX8MM_IOMUXC_SAI3_TXC_GPIO5_IO0*/ 0x1DC 0x444 0x000 0x5 0x0	0x100
+				>;
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <&i2c4>;
+
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			usb2514b: usb2514b@2c {
+				compatible ="microchip,usb2514b";
+				pinctrl-names = "default";
+				pinctrl-0 = <&pinctrl_usbhub>;
+				reg = <0x2c>;
+				reset-gpios = <&gpio5 0 0>;
+				swap-dx-lanes = <0>;
+			};
+		};
+	};
+};
