@@ -1,7 +1,7 @@
 /dts-v1/;
 /plugin/;
 
-// #include "imx8mm-pinfunc.h"
+#include "imx8mm-pinfunc.h"
 
 / {
 	compatible = "gg,kimchi";
@@ -12,7 +12,7 @@
 		__overlay__ {
 			pinctrl_usbhub: usbhubgrp {
 				fsl,pins = <
-					/*MX8MM_IOMUXC_SAI3_TXC_GPIO5_IO0*/ 0x1DC 0x444 0x000 0x5 0x0	0x100
+					MX8MM_IOMUXC_SAI3_TXC_GPIO5_IO0	0x100
 				>;
 			};
 		};
