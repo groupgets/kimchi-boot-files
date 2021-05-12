@@ -7,26 +7,17 @@ run mmcargs
 
 # bootm ${fitaddr}
 
-echo Start
 bootm start ${fitaddr}
 
-echo Loados
 bootm loados
-
-echo Ramdisk
 bootm ramdisk
-
-echo Fdt
-bootm fdt
-
-echo Patching FDT
-env set fdt_file usb-ulid-v1.dtbo
-run loadfdt
-fdt resize 0x4000
-fdt apply ${fdt_addr}
-
-echo Prep
 bootm prep
 
-echo Go
+echo Patching FDT...
+
+fdt resize 0x4000
+env set fdt_file usb-ulid-v1.dtbo
+run loadfdt
+fdt apply ${fdt_addr}
+
 bootm go
