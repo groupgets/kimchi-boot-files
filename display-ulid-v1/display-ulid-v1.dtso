@@ -1,0 +1,89 @@
+/dts-v1/;
+/plugin/;
+
+#include "imx8mm-pinfunc.h"
+
+/ {
+	compatible = "gg,kimchi";
+
+	fragment@1 {
+		target = <&iomuxc>;
+
+		__overlay__ {
+			pinctrl_mipi_dsi_en: mipi_dsi_grp {
+				fsl,pins = <
+					MX8MM_IOMUXC_GPIO1_IO01_GPIO1_IO1	0x16
+					MX8MM_IOMUXC_GPIO1_IO15_GPIO1_IO15	0x16
+				>;
+			};
+
+			pinctrl_pwm2: pwm2grp {
+				fsl,pins = <
+					MX8MM_IOMUXC_GPIO1_IO13_PWM2_OUT	0x3
+				>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <&mipi_dsi>;
+
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			status = "okay";
+
+			panel@0 {
+				compatible = "startek,kd050hdfia020";
+				reg = <0>;
+				pinctrl-0 = <&pinctrl_mipi_dsi_en>;
+				reset-gpio = <&gpio1 1 1>;
+				dsi-lanes = <4>;
+				status = "okay";
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <&lcdif>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+ 
+	fragment@4 {
+		target = <&mu>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	/*
+	fragment@5 {
+		target = <&pwm2>;
+
+		__overlay__ {
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_pwm2>;
+			status = "okay";
+		};
+	};
+
+	fragment@6 {
+		target-path = "/";
+
+		__overlay__ {
+			backlight_dsi: backlight-dsi {
+				compatible = "pwm-backlight";
+				pwms = <&pwm2 0 3000000 0>;
+				brightness-levels = <0 1 2 4 8 16 32 64 128 255>;
+				default-brightness-level = <6>;
+				status= "okay";
+			};
+		};
+	};
+	*/
+};
