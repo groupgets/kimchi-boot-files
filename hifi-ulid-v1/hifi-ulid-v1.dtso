@@ -28,8 +28,8 @@
 				compatible = "simple-audio-card";
 				simple-audio-card,name = "wm8750-audio";
 				simple-audio-card,format = "i2s";
-				simple-audio-card,frame-master = <&cpudai>;
-				simple-audio-card,bitclock-master = <&cpudai>;
+				simple-audio-card,frame-master = <&codecdai>;
+				simple-audio-card,bitclock-master = <&codecdai>;
 				simple-audio-card,widgets =
 					"Line", "Left Line Out Jack",
 					"Line", "Right Line Out Jack";
@@ -74,8 +74,11 @@
 
 			wm8750: wm8750@1a {
 				#sound-dai-cells = <0>;
+				#clock-cells = <1>;
 				compatible = "wlf,wm8750";
 				reg = <0x1a>;
+				clocks = <&osc 0>;
+				clock-names = "mclk";
 			};
 		};
 	};
