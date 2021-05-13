@@ -1,0 +1,98 @@
+/dts-v1/;
+/plugin/;
+
+#include "imx8mm-pinfunc.h"
+#include "imx8mm-clock.h"
+
+/ {
+	compatible = "gg,kimchi";
+
+	fragment@1 {
+		target-path = "/";
+
+		__overlay__ {
+			osc: oscillator {
+				compatible = "fixed-clock";
+				#clock-cells = <1>;
+				clock-frequency  = <12288000>;
+				clock-output-names = "osc";
+			};
+		};
+	};
+
+	fragment@2 {
+		target-path = "/";
+
+		__overlay__ {
+			sound-wm8750 {
+				compatible = "simple-audio-card";
+				simple-audio-card,name = "wm8750-audio";
+				simple-audio-card,format = "i2s";
+				simple-audio-card,frame-master = <&cpudai>;
+				simple-audio-card,bitclock-master = <&cpudai>;
+				simple-audio-card,widgets =
+					"Line", "Left Line Out Jack",
+					"Line", "Right Line Out Jack";
+				simple-audio-card,routing =
+					"Left Line Out Jack", "LOUT1",
+					"Right Line Out Jack", "ROUT1";
+
+				cpudai: simple-audio-card,cpu {
+					sound-dai = <&sai2>;
+					dai-tdm-slot-num = <2>;
+					dai-tdm-slot-width = <32>;
+				};
+
+				codecdai: simple-audio-card,codec {
+					sound-dai = <&wm8750>;
+					clocks = <&clk IMX8MM_CLK_SAI2_ROOT>;
+				};
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <&sai2>;
+
+		__overlay__ {
+			#sound-dai-cells = <0>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_sai2>;
+			assigned-clocks = <&clk IMX8MM_CLK_SAI2>;
+			assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
+			assigned-clock-rates = <24576000>;
+			status = "okay";
+		};
+	};
+
+	fragment@4 {
+		target = <&i2c3>;
+
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			wm8750: wm8750@1a {
+				#sound-dai-cells = <0>;
+				compatible = "wlf,wm8750";
+				reg = <0x1a>;
+			};
+		};
+	};
+
+	fragment@5 {
+		target = <&iomuxc>;
+
+		__overlay__ {
+			pinctrl_sai2: sai2grp {
+				fsl,pins = <
+					MX8MM_IOMUXC_SAI2_TXC_SAI2_TX_BCLK      0xd6
+					MX8MM_IOMUXC_SAI2_TXFS_SAI2_TX_SYNC     0xd6
+					MX8MM_IOMUXC_SAI2_MCLK_SAI2_MCLK        0xd6
+					MX8MM_IOMUXC_SAI2_TXD0_SAI2_TX_DATA0    0xd6
+					MX8MM_IOMUXC_SAI2_RXD0_SAI2_RX_DATA0    0xd6
+				>;
+			};
+		};
+	};
+};
