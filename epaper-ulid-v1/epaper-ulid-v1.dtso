@@ -1,0 +1,41 @@
+/dts-v1/;
+/plugin/;
+
+#include "imx8mm-pinfunc.h"
+
+/ {
+	compatible = "gg,kimchi";
+
+	fragment@1 {
+		target = <&ecspi1>;
+
+		__overlay__ {
+			status = "okay";
+			pinctrl-names = "default";
+			pinctrl-0 = <&ecspi1grp>;
+			cs-gpios = <&gpio5 9 1>; // GPIO_ACTIVE_LOW
+			fsl,spi-num-chipselects = <1>;
+
+			spidev@0 {
+				reg = <0>;
+				spi-max-frequency = <24000000>;
+				compatible = "spidev";
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <&iomuxc>;
+
+		__overlay__ {
+			pinctrl_ecspi1: ecspi1grp {
+				fsl,pins = <
+					MX8MM_IOMUXC_ECSPI1_SCLK_ECSPI1_SCLK		0x19 /* 0x82 */
+					MX8MM_IOMUXC_ECSPI1_MOSI_ECSPI1_MOSI		0x19 /* 0x82 */
+					MX8MM_IOMUXC_ECSPI1_MISO_ECSPI1_MISO		0x19 /* 0x82 */
+					MX8MM_IOMUXC_ECSPI1_SS0_GPIO5_IO9		0x140 /* 0x40000 */
+				>;
+			};
+		};
+	};
+};

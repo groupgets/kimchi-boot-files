@@ -12,6 +12,7 @@ all :
 	+$(MAKE) -C bootscript
 	+$(MAKE) -C usb-ulid-v1
 	+$(MAKE) -C display-ulid-v1
+	+$(MAKE) -C epaper-ulid-v1
 	+$(MAKE) -C hifi-ulid-v1
 
 clean :
