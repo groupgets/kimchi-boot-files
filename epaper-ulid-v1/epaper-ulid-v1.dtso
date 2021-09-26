@@ -10,6 +10,9 @@
 		target = <&ecspi1>;
 
 		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
 			status = "okay";
 			pinctrl-names = "default";
 			pinctrl-0 = <&ecspi1grp>;
