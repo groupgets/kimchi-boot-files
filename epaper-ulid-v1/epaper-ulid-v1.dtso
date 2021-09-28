@@ -15,7 +15,7 @@
 
 			status = "okay";
 			pinctrl-names = "default";
-			pinctrl-0 = <&ecspi1grp>;
+			pinctrl-0 = <&pinctrl_ecspi1>;
 			cs-gpios = <&gpio5 9 1>; // GPIO_ACTIVE_LOW
 			fsl,spi-num-chipselects = <1>;
 
