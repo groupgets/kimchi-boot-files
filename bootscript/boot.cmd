@@ -2,6 +2,7 @@ echo Booting from mmc ...
 
 env set fitaddr 0x50000000
 env set fitimage fitImage
+env set fdt_high
 fatload mmc ${mmcdev}:${mmcpart} ${fitaddr} ${fitimage}
 run mmcargs
 
